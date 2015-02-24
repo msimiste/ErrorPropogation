@@ -37,7 +37,7 @@ namespace ErrorProp
 		}
 
 		err = sqrt(err);
-		cout << "The propogated value is " << Q << " +/- " << err;
+		cout << "The propogated value is " << Q << " (+/-) " << err;
 		
 		if(again())
 			add();		
@@ -66,7 +66,7 @@ namespace ErrorProp
 		}
 
 		err = sqrt(err)*(abs (Q));
-		cout << "The propogated value is " << Q << " +/- " << err;
+		cout << "The propogated value is " << Q << " (+/-) " << err;
 
 		if (again())
 			multiply();
@@ -89,7 +89,7 @@ namespace ErrorProp
 			cin >> input3;
 			Q = pow(input1, input2);
 			err =(abs (Q)) * (abs (input2)) * (input3/input1);
-			cout << "The propogated value is " << Q << " +/- " << err;
+			cout << "The propogated value is " << Q << " (+/-) " << err;
 		} while (again());
 	}
 

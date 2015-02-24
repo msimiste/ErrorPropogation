@@ -10,7 +10,8 @@ using namespace ErrorProp;
 
 int main()
 {
-	
+	add();
+	multiply();
 	exponent();
 
 	return 0;
