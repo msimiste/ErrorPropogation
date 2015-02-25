@@ -1,106 +1,49 @@
-#include "Stdafx.h"
 
 #include "ErrorProp.h"
-#include <cstdlib>
-#include <iostream>
-#include <cstdio>
-#include <string>
-#include <vector>
-#include "ErrorProp.h"
-
-
-using namespace std;
 
 namespace ErrorProp
-{
+ {
+	 /* calculates the addtion of 2 values with error propogation
+	 requires 4 parameters of type double
+	 */
+	void addEprop(double& val1, double& err1, double val2, double err2)
+	{				
+		val1 = val1 + val2;		
+		err1 =sqrt(pow(err1,2.0)+pow(err2,2.0));
+	}
 
-	void add()
+	/* calculates the multiplication of 2 values with error propogation
+	requires 4 parameters of type double
+	*/
+	void multEprop(double& val1, double& err1, double val2, double err2)
+	{		
+		double Q = 1;		
+		Q = abs(val1*val2);	
+		err1 = Q*sqrt(pow((err1 / val1), 2.0) + pow((err2 / val2), 2.0));
+		val1 = Q;			
+	}
+
+	/* calculates the exponentiaion of a values with error propogation
+	requires 3 parameters of type double
+	*/
+	void expEprop(double& base, double exp, double& err1)
 	{
-		int values=0;
-		
-		double input;
 		double Q = 0;
 		double err = 0;
-		bool repeat = false;
-		cout << "Please enter the number of values to be added: \n";
-		cin >> values;
-		int count = values;		
-		
-		while (count-- > 0)
-		{
-			cout << "Enter value " << (values - count) << "\n";
-			cin >> input;
-			Q+= input;
-			cout << "Enter error " << (values - count) << "\n";
-			cin >> input;
-			err+= pow(input, 2.0);
-		}
+		Q = pow(base, exp);
+		err1 = (abs(Q)) * (abs(exp)) * (err1 / base);
+		base = Q;
+	} 
 
-		err = sqrt(err);
-		cout << "The propogated value is " << Q << " (+/-) " << err;
-		
-		if(again())
-			add();		
-
-	}
-
-	void multiply()
+	/* calculates the multiplication of 2 values with error propogation
+	one value is an exact value with no associated error
+	requires 3 parameters of type double
+	*/
+	void exactValEprop(double eVal, double& val1, double& err1)
 	{
-		int values = 0;
-		double input1;
-		double input2;
-		double Q = 1;
-		double err = 0;		
-		cout << "Please enter the number of values to be multiplied: \n";
-		cin >> values;
-		int count = values;
-
-		while (count-- > 0)
-		{
-			cout << "Enter value " << (values - count) << "\n";
-			cin >> input1;
-			Q *= input1;
-			cout << "Enter error " << (values - count) << "\n";
-			cin >> input2;
-			err += pow((input2/input1), 2.0);
-		}
-
-		err = sqrt(err)*(abs (Q));
-		cout << "The propogated value is " << Q << " (+/-) " << err;
-
-		if (again())
-			multiply();
-	}
-	void exponent()
-	{
-		double input1;
-		double input2;
-		double input3;
-		double Q = 0;
-		double err = 0;
-
-		do 
-		{
-			cout << "Please enter the base " << "\n";
-			cin >> input1;		
-			cout << "Please enter the exponent " << "\n";
-			cin >> input2;
-			cout << "Enter error (+/-) " << "\n";
-			cin >> input3;
-			Q = pow(input1, input2);
-			err =(abs (Q)) * (abs (input2)) * (input3/input1);
-			cout << "The propogated value is " << Q << " (+/-) " << err;
-		} while (again());
-	}
-
-	bool again()
-	{
-		string ans;
-		cout << "\nDo you want to do another calculation? \n";
-		cin >> ans;		
-		if ((ans.substr(0, 1)=="Y" ) || (ans.substr(0, 1)=="y"))
-			return true;
-		else
-			return false;
+		double Q = abs( eVal * val1);
+		double absOfval1 = abs(val1);
+		err1 = Q*(err1 / absOfval1);
+		val1 = Q;	
 	}
 }
